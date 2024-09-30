@@ -1,9 +1,9 @@
 mysql:
-  host: "X"
+  host: "127.0.0.1"
   port: 3306
-  database: "X"
-  username: "X"
-  password: "X"
+  database: "mc"
+  username: "root"
+  password: "123456"
   ## Don't change this unless the console is spamming errors about SSL.
   ssl: true
 
@@ -36,15 +36,3 @@ messages:
       error: "&4An error occurred while trying to set &e%player%&4's nickname."
       set: "&aSuccessfully set &e%player%&a's nickname to &e%nickname%"
       unset: "&aSuccessfully removed &e%player%&a's nickname."
-  importnicks:
-    no-permission: "&4You do not have permission to use this command."
-    no-dependency: "&4Unable to locate Essentials or CMI on the server."
-    error: "&4An error occurred while trying to import nicknames from &e%plugin%"
-    starting: "&aStarting import from &e%plugin%"
-    finished: "&aSuccessfully imported nicknames from &e%plugin%"
-  exportnicks:
-    no-permission: "&4You do not have permission to use this command."
-    no-dependency: "&4Unable to locate Essentials or CMI on the server."
-    error: "&4An error occurred while trying to export nicknames to &e%plugin%"
-    starting: "&aStarting export to &e%plugin%"
-    finished: "&aSuccessfully exported nicknames to &e%plugin%"

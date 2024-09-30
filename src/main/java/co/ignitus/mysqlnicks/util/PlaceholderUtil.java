@@ -28,7 +28,7 @@ public class PlaceholderUtil extends PlaceholderExpansion {
 
     @Override
     public String getAuthor() {
-        return "Ignitus Co.";
+        return "Ignitus Co; IllTamer";
     }
 
     @Override
