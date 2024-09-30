@@ -1,9 +1,10 @@
 package co.ignitus.mysqlnicks;
 
+import co.ignitus.mysqlnicks.cache.NameCacheService;
 import co.ignitus.mysqlnicks.commands.NickCMD;
 import co.ignitus.mysqlnicks.hook.VaultHook;
 import co.ignitus.mysqlnicks.util.DataUtil;
-import co.ignitus.mysqlnicks.util.PlaceholderUtil;
+import co.ignitus.mysqlnicks.hook.PlaceholderAPIHook;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -14,14 +15,15 @@ public final class MySQLNicks extends JavaPlugin {
 
     @Getter
     private static MySQLNicks instance;
-
-    private final CommandSender cs = Bukkit.getConsoleSender();
+    @Getter
+    private NameCacheService nameCacheService;
 
     @Override
     public void onEnable() {
         instance = this;
         saveDefaultConfig();
 
+        CommandSender cs = Bukkit.getConsoleSender();
         if (!DataUtil.createDatabases()) {
             cs.sendMessage(ChatColor.RED + "[MySQLNicks] Unable to connect to the database. Disabling plugin...");
             getPluginLoader().disablePlugin(this);
@@ -41,9 +43,10 @@ public final class MySQLNicks extends JavaPlugin {
             getPluginLoader().disablePlugin(this);
             return;
         }
-        new PlaceholderUtil(this).register();
+        new PlaceholderAPIHook(this).register();
         cs.sendMessage(ChatColor.GREEN + "[MySQLNicks] Hooked to PlaceholderAPI");
 
+        nameCacheService = new NameCacheService();
         getCommand("nick").setExecutor(new NickCMD());
     }
 

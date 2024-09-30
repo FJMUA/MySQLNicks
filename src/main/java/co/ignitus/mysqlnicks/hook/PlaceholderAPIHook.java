@@ -1,19 +1,23 @@
-package co.ignitus.mysqlnicks.util;
+package co.ignitus.mysqlnicks.hook;
 
 import co.ignitus.mysqlnicks.MySQLNicks;
+import co.ignitus.mysqlnicks.util.DataUtil;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
+
+import java.util.Optional;
 
 import static co.ignitus.mysqlnicks.util.MessageUtil.format;
 import static co.ignitus.mysqlnicks.util.MessageUtil.stripColor;
 
-public class PlaceholderUtil extends PlaceholderExpansion {
+// TODO
+public class PlaceholderAPIHook extends PlaceholderExpansion {
 
-    private final MySQLNicks mySQLNicks;
+    private final MySQLNicks plugin;
 
-    public PlaceholderUtil(MySQLNicks mySQLNicks) {
-        this.mySQLNicks = mySQLNicks;
+    public PlaceholderAPIHook(MySQLNicks plugin) {
+        this.plugin = plugin;
     }
 
     @Override
@@ -38,22 +42,25 @@ public class PlaceholderUtil extends PlaceholderExpansion {
 
     @Override
     public String getVersion() {
-        return mySQLNicks.getDescription().getVersion();
+        return plugin.getDescription().getVersion();
     }
 
     @Override
     public String onPlaceholderRequest(Player player, String identifier) {
         if (identifier.equalsIgnoreCase("nickname")) {
-            String nickname = DataUtil.getNickname(player.getUniqueId());
-            if (nickname == null)
+            Optional<String> nickname = plugin.getNameCacheService().getCache(player.getUniqueId());
+            if (!nickname.isPresent()) {
                 return player.getName();
-            return format(mySQLNicks.getConfig().getString("nickname-prefix", "") + nickname);
+            }
+            return format(plugin.getConfig().getString("nickname-prefix", "") + nickname);
         }
+
         if (identifier.equalsIgnoreCase("nocolor") || identifier.equalsIgnoreCase("nocolour")) {
-            String nickname = DataUtil.getNickname(player.getUniqueId());
-            if (nickname == null)
+            Optional<String> nickname = plugin.getNameCacheService().getCache(player.getUniqueId());
+            if (!nickname.isPresent()) {
                 return player.getName();
-            String message = mySQLNicks.getConfig().getString("nickname-prefix", "") + nickname;
+            }
+            String message = plugin.getConfig().getString("nickname-prefix", "") + nickname;
             return player.hasPermission("mysqlnicks.bypass.nocolor") ? format(message) : stripColor(message);
         }
         return null;
