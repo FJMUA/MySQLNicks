@@ -11,10 +11,9 @@ commands:
   nick:
     description: Set your nickname
     aliases: [onick, remotenick]
-  importnicks:
-    description: Import nicknames from a supported plugin
-  exportnicks:
-    description: Export nicknames to a supported plugin
+  nickhistory:
+    description: Query one's history nicknames
+    aliases: [ nickhis ]
 
 permissions:
   mysqlnicks.staff:

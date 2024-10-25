@@ -1,6 +1,7 @@
 package co.ignitus.mysqlnicks.util;
 
 import co.ignitus.mysqlnicks.MySQLNicks;
+import co.ignitus.mysqlnicks.Pair;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.Getter;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -9,9 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class DataUtil {
 
@@ -51,6 +50,13 @@ public class DataUtil {
                     "CREATE TABLE IF NOT EXISTS mysqlnicks(" +
                             "`uuid` VARCHAR(255) UNIQUE NOT NULL," +
                             "`nickname` VARCHAR(255) DEFAULT NULL," +
+                            "PRIMARY KEY (`uuid`))"
+            ).execute();
+            connection.prepareStatement(
+                    "CREATE TABLE IF NOT EXISTS mysqlnicks_history(" +
+                            "`uuid` VARCHAR(255) UNIQUE NOT NULL," +
+                            "`old_nickname` VARCHAR(255) DEFAULT NULL," +
+                            "`new_nickname` VARCHAR(255) DEFAULT NULL," +
                             "PRIMARY KEY (`uuid`))"
             ).execute();
             return true;
@@ -116,6 +122,21 @@ public class DataUtil {
         }
     }
 
+    public static boolean setHisNickname(UUID uuid, String oldNickname, String newNickname) {
+        try (Connection connection = getDataSource().getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(
+                    "INSERT INTO `mysqlnicks_history`(`uuid`, `old_nickname`, `new_nickname`) VALUES (?, ?, ?)"
+            );
+            statement.setString(1, uuid.toString());
+            statement.setString(2, oldNickname);
+            statement.setString(3, newNickname);
+            statement.executeUpdate();
+            return true;
+        } catch (SQLException ex) {
+            return false;
+        }
+    }
+
     /**
      * Attempts to simultaneously update multiple nicknames
      *
@@ -153,4 +174,20 @@ public class DataUtil {
         }
         return nicknames;
     }
+
+    public static List<Pair<String, String>> getSavedHistoryNicknames(UUID uuid) {
+        List<Pair<String, String>> hisNicknames = new ArrayList<>();
+        try (Connection connection = getDataSource().getConnection()) {
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM `mysqlnicks_history` WHERE `uuid` = ?");
+            statement.setString(1, uuid.toString());
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                Pair<String, String> pair = new Pair<>(result.getString("old_nickname"), result.getString("new_nickname"));
+                hisNicknames.add(pair);
+            }
+        } catch (SQLException ignored) {
+        }
+        return hisNicknames;
+    }
+
 }

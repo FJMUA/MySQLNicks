@@ -22,6 +22,10 @@ public class VaultHook {
         return true;
     }
 
+    public static boolean hasMoney(double money, OfflinePlayer player) {
+        return economy.has(player, money);
+    }
+
     public static boolean withdraw(double money, OfflinePlayer player) {
         EconomyResponse resp = economy.withdrawPlayer(player, money);
         return resp.transactionSuccess();

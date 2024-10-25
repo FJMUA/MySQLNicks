@@ -5,13 +5,13 @@ import co.ignitus.mysqlnicks.util.DataUtil;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
 import static co.ignitus.mysqlnicks.util.MessageUtil.format;
 import static co.ignitus.mysqlnicks.util.MessageUtil.stripColor;
 
-// TODO
 public class PlaceholderAPIHook extends PlaceholderExpansion {
 
     private final MySQLNicks plugin;
@@ -30,16 +30,19 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
         return true;
     }
 
+    @NotNull
     @Override
     public String getAuthor() {
         return "Ignitus Co; IllTamer";
     }
 
+    @NotNull
     @Override
     public String getIdentifier() {
         return "mysqlnicks";
     }
 
+    @NotNull
     @Override
     public String getVersion() {
         return plugin.getDescription().getVersion();
