@@ -72,7 +72,7 @@ public abstract class CacheService<TK, TV> {
     @NotNull
     public Optional<TV> getCache(TK key) {
         Optional<TV> value = loadingCache.getIfPresent(key);
-        if (value == null) {
+        if (value == null || !value.isPresent()) {
             try {
                 return loadingCache.getUnchecked(key);
             } catch (Exception e) {

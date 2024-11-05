@@ -2,6 +2,7 @@ package co.ignitus.mysqlnicks.commands;
 
 import co.ignitus.mysqlnicks.MySQLNicks;
 import co.ignitus.mysqlnicks.Pair;
+import co.ignitus.mysqlnicks.cache.NameCacheService;
 import co.ignitus.mysqlnicks.hook.VaultHook;
 import co.ignitus.mysqlnicks.util.DataUtil;
 import co.ignitus.mysqlnicks.util.MessageUtil;
@@ -14,6 +15,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -131,12 +133,14 @@ public class NickCMD implements CommandExecutor {
                 target.sendMessage(MessageUtil.getMessage("nick.target-failed"));
                 return true;
             }
-            Optional<String> oldNickname = mySQLNicks.getNameCacheService().getCache(target.getUniqueId());
+            NameCacheService cacheService = mySQLNicks.getNameCacheService();
+            Optional<String> oldNickname = cacheService.getCache(target.getUniqueId());
             if (!DataUtil.setNickname(target.getUniqueId(), nickname)) {
                 sender.sendMessage(MessageUtil.getMessage(path + "error",
                         "%player%", target.getName()));
                 return true;
             }
+            cacheService.incrementalUpdate(Collections.singletonMap(target.getUniqueId(), nickname));
             DataUtil.setHisNickname(target.getUniqueId(), oldNickname.orElseGet(target::getDisplayName), nickname);
             target.sendMessage(MessageUtil.getMessage("nick.target-success"));
             if (nickname == null) {

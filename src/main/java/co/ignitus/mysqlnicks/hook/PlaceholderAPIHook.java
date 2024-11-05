@@ -55,7 +55,7 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
             if (!nickname.isPresent()) {
                 return player.getName();
             }
-            return format(plugin.getConfig().getString("nickname-prefix", "") + nickname);
+            return format(plugin.getConfig().getString("nickname-prefix", "") + nickname.get());
         }
 
         if (identifier.equalsIgnoreCase("nocolor") || identifier.equalsIgnoreCase("nocolour")) {
@@ -63,7 +63,7 @@ public class PlaceholderAPIHook extends PlaceholderExpansion {
             if (!nickname.isPresent()) {
                 return player.getName();
             }
-            String message = plugin.getConfig().getString("nickname-prefix", "") + nickname;
+            String message = plugin.getConfig().getString("nickname-prefix", "") + nickname.get();
             return player.hasPermission("mysqlnicks.bypass.nocolor") ? format(message) : stripColor(message);
         }
         return null;
