@@ -47,7 +47,9 @@ public final class MySQLNicks extends JavaPlugin {
         cs.sendMessage(ChatColor.GREEN + "[MySQLNicks] Hooked to PlaceholderAPI");
 
         nameCacheService = new NameCacheService();
-        getCommand("nick").setExecutor(new NickCMD());
+        NickCMD cmd = new NickCMD();
+        getCommand("nick").setExecutor(cmd);
+        getCommand("nickhis").setExecutor(cmd);
     }
 
     @Override

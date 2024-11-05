@@ -2,7 +2,7 @@ name: MySQLNicks
 version: ${project.version}
 main: co.ignitus.mysqlnicks.MySQLNicks
 api-version: "1.13"
-softdepend: [PlaceholderAPI]
+softdepend: [PlaceholderAPI, Vault]
 authors: ["Ignitus Co", "IllTamer"]
 description: Share nicknames across servers with mysql
 website: https://ignitus.co
@@ -10,10 +10,10 @@ website: https://ignitus.co
 commands:
   nick:
     description: Set your nickname
-    aliases: [onick, remotenick]
-  nickhistory:
+    aliases: []
+  nickhis:
     description: Query one's history nicknames
-    aliases: [ nickhis ]
+    aliases: []
 
 permissions:
   mysqlnicks.staff:
@@ -30,11 +30,5 @@ permissions:
     description: Allow player to use color formatting in their nicknames.
   mysqlnicks.nick.magic:
     description: "Allow player to use magic (&k) in their nicknames."
-  mysqlnicks.importnicks:
-    description: Grant permission to import nicknames from supported plugins.
-  mysqlnicks.exportnicks:
-    description: Grant permission to export nicknames to supported plugins.
-  mysqlnicks.bypass.nocolor:
-    description: Shows colors in the nocolor placeholder
-  mysqlnicks.bypass.limit:
-    description: Grants permission to bypass character limit
+  mysqlnicks.nickhis:
+    description: Allow permission to query one's history nicknames

@@ -23,7 +23,7 @@ public class NickCMD implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if ("nickhistory".equalsIgnoreCase(label)) {
+        if ("nickhis".equalsIgnoreCase(label)) {
             if (args.length < 1) {
                 sender.sendMessage(MessageUtil.getMessage("nickhis.insufficient-arguments"));
                 return true;

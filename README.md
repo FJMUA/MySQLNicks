@@ -31,3 +31,6 @@ Forked from IgnitusCo/MySQLNicks/fork, without CMI, supports high version server
 - `/nick <player> <nickname/off>` Edit another player's nickname
   - permission: 
     - `mysqlnicks.staff`
+- `/nickhis <player>` Query one's history nicknames
+  - permission
+    - `mysqlnicks.nickhis`
